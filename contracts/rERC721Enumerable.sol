@@ -288,7 +288,7 @@ interface IERC721Enumerable is IERC721 {
  * enumerability of all the token ids in the contract as well as all token ids owned by each
  * account.
  */
-abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
+abstract contract rERC721Enumerable is ERC721, IERC721Enumerable {
 
     // Mapping from owner to list of owned token IDs
     mapping(uint => mapping(uint256 => uint256)) private _ownedTokens;
@@ -321,7 +321,7 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
      * @dev See {IERC721Enumerable-tokenByIndex}.
      */
     function tokenByIndex(uint256 index) public view virtual override returns (uint256) {
-        require(index < ERC721Enumerable.totalSupply(), "ERC721Enumerable: global index out of bounds");
+        require(index < rERC721Enumerable.totalSupply(), "ERC721Enumerable: global index out of bounds");
         return _allTokens[index];
     }
 
