@@ -4,3 +4,4 @@ artifacts
 build
 reports
 cache
+.env
