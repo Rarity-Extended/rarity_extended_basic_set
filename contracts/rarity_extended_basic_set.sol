@@ -25,10 +25,26 @@ contract rarity_extended_basic_set is Extended {
         basicSetPrice = _basicSetPrice;
     }
 
+    /*******************************************************************************
+    **  @notice: used for admin to extract money earned from sets sales
+	*******************************************************************************/
     function getMoney() public onlyExtended {
         payable(msg.sender).transfer(address(this).balance);
     }
 
+    /*******************************************************************************
+    **  @dev: deploy 4 new rERC721 (head, body, hand, foot). Saves on a registry
+    **  @notice: deploy a new set
+    **  @param setName: name of the set
+    **  @param headName: name of the rERC721 of the head
+    **	@param headSymbol: symbol of the rERC721 of the head
+    **  @param bodyName: name of the rERC721 of the body
+    **  @param bodySymbol: symbol of the rERC721 of the body
+    **	@param handName: name of the rERC721 of the hand
+    **  @param handSymbol: symbol of the rERC721 of the hand
+    **  @param footName: name of the rERC721 of the foot
+    **	@param footSymbol: symbol of the rERC721 of the foot
+	*******************************************************************************/
     function deployNewSet(
         string memory setName,
         string memory headName,
@@ -58,11 +74,22 @@ contract rarity_extended_basic_set is Extended {
         setsIndex++;
     }
 
+    /*******************************************************************************
+    **  @dev: internal function for mint a new set part 
+    **  @param setAddr: address of the rERC721
+    **  @param receiver: summoner which will receive the set
+	*******************************************************************************/
     function _mintSet(address setAddr, uint receiver) internal {
         IrERC721 set = IrERC721(setAddr);
         set.mint(receiver);
     }
 
+    /*******************************************************************************
+    **  @dev: mint a new set in exchange for `basicSetPrice`
+    **  @notice: buy a new set paying the price
+    **  @param setIndex: index of the set to buy
+    **  @param receiver: summoner which will receive the set
+	*******************************************************************************/
     function buySet(uint setIndex, uint receiver) public payable {
         require(msg.value == basicSetPrice, "!basicSetPrice");
         require(setIndex != 0, "!setIndex");
@@ -81,6 +108,19 @@ contract rarity_extended_basic_set is Extended {
         _mintSet(setToBuy.foot, receiver);
     }
 
+    /*******************************************************************************
+    **  @notice: get all sets
+    **  @return: an array of BasicSet
+	*******************************************************************************/
+    function getSets() external view returns (BasicSet[] memory) {
+        uint _setsIndex = setsIndex - 1;
+        BasicSet[] memory _sets = new BasicSet[](_setsIndex - 1);
+        for (uint256 i = 0; i < _setsIndex; i++) {
+            _sets[i] = sets[i];
+        }
+        return _sets;
+    }
+
 }
 
 contract basic_set is rERC721Enumerable, Extended {
@@ -94,6 +134,10 @@ contract basic_set is rERC721Enumerable, Extended {
         symbol = _symbol;
     }
 
+    /*******************************************************************************
+    **  @notice: mint a new set part
+    **  @param to: receiver of the rERC721
+	*******************************************************************************/
     function mint(uint to) external onlyExtended {
         _safeMint(to, tokenIds);
         tokenIds++;
