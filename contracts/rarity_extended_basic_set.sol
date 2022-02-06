@@ -5,19 +5,31 @@ import "./interfaces/IrERC721.sol";
 import "./rERC721Enumerable.sol";
 import "./extended.sol";
 
-contract rarity_extended_basic_set is Extended {
+contract rarity_extended_basic_set is Extended, rERC721Enumerable {
+    uint constant ARMOR_TYPE = 2;
+    uint constant WEAPON_TYPE = 3;
+    address immutable rm;
 
+    uint public next_item;
     uint public basicSetPrice;
     uint public setsIndex = 1;
-    address public rm;
     mapping(uint => BasicSet) public sets;
+    mapping(uint => item) public items;
+
+    struct item {
+        uint8 base_type;
+        uint8 item_type;
+        uint32 crafted;
+        uint crafter;
+    }
 
     struct BasicSet {
         string setName;
-        address head;
-        address body;
-        address hand;
-        address foot;
+        uint8 head;
+        uint8 body;
+        uint8 hand;
+        uint8 foot;
+        uint8 weapon;
     }
 
     constructor(address _rm, uint _basicSetPrice) {
@@ -36,52 +48,30 @@ contract rarity_extended_basic_set is Extended {
     **  @dev: deploy 4 new rERC721 (head, body, hand, foot). Saves on a registry
     **  @notice: deploy a new set
     **  @param setName: name of the set
-    **  @param headName: name of the rERC721 of the head
-    **	@param headSymbol: symbol of the rERC721 of the head
-    **  @param bodyName: name of the rERC721 of the body
-    **  @param bodySymbol: symbol of the rERC721 of the body
-    **	@param handName: name of the rERC721 of the hand
-    **  @param handSymbol: symbol of the rERC721 of the hand
-    **  @param footName: name of the rERC721 of the foot
-    **	@param footSymbol: symbol of the rERC721 of the foot
+    **  @param headItemType: item type for the head armor
+    **  @param bodyItemType: item type for the body armor
+    **  @param handItemType: item type for the hand armor
+    **  @param footItemType: item type for the foot armor
+    **  @param weaponItemType: item type for the weapon
 	*******************************************************************************/
     function deployNewSet(
         string memory setName,
-        string memory headName,
-        string memory headSymbol,
-        string memory bodyName,
-        string memory bodySymbol,
-        string memory handName,
-        string memory handSymbol,
-        string memory footName,
-        string memory footSymbol
+        uint headItemType,
+        uint bodyItemType,
+        uint handItemType,
+        uint footItemType,
+        uint weaponItemType
     ) public onlyExtended {
-        
-        //Head
-        basic_set head = new basic_set(rm, headName, headSymbol);
-
-        //Body
-        basic_set body = new basic_set(rm, bodyName, bodySymbol);
-
-        //Hand
-        basic_set hand = new basic_set(rm, handName, handSymbol);
-
-        //Foot
-        basic_set foot = new basic_set(rm, footName, footSymbol);
-
         //Save on registry
-        sets[setsIndex] = BasicSet(setName, address(head), address(body), address(hand), address(foot));
+        sets[setsIndex] = BasicSet(
+            setName,
+            headItemType,
+            bodyItemType,
+            handItemType,
+            footItemType,
+            weaponItemType
+        );
         setsIndex++;
-    }
-
-    /*******************************************************************************
-    **  @dev: internal function for mint a new set part 
-    **  @param setAddr: address of the rERC721
-    **  @param receiver: summoner which will receive the set
-	*******************************************************************************/
-    function _mintSet(address setAddr, uint receiver) internal {
-        IrERC721 set = IrERC721(setAddr);
-        set.mint(receiver);
     }
 
     /*******************************************************************************
@@ -93,19 +83,36 @@ contract rarity_extended_basic_set is Extended {
     function buySet(uint setIndex, uint receiver) public payable {
         require(msg.value == basicSetPrice, "!basicSetPrice");
         require(setIndex != 0, "!setIndex");
+
         BasicSet memory setToBuy = sets[setIndex];
+        items[next_item] = item(ARMOR_TYPE, setToBuy.head, uint32(block.timestamp), receiver);
+        _safeMint(receiver, next_item);
+        next_item++;
 
-        //Head
-        _mintSet(setToBuy.head, receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.body, uint32(block.timestamp), receiver);
+        _safeMint(receiver, next_item);
+        next_item++;
 
-        //Body
-        _mintSet(setToBuy.body, receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.hand, uint32(block.timestamp), receiver);
+        _safeMint(receiver, next_item);
+        next_item++;
 
-        //Hand
-        _mintSet(setToBuy.hand, receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.foot, uint32(block.timestamp), receiver);
+        _safeMint(receiver, next_item);
+        next_item++;
 
-        //Foot
-        _mintSet(setToBuy.foot, receiver);
+        items[next_item] = item(WEAPON_TYPE, setToBuy.weapon, uint32(block.timestamp), receiver);
+        _safeMint(receiver, next_item);
+        next_item++;
+    }
+
+
+    function get_type(uint _type_id) public pure returns (string memory _type) {
+       if (_type_id == 2) {
+            _type = "Armor";
+        } else if (_type_id == 3) {
+            _type = "Weapons";
+        }
     }
 
     /*******************************************************************************
@@ -119,28 +126,6 @@ contract rarity_extended_basic_set is Extended {
             _sets[i] = sets[i];
         }
         return _sets;
-    }
-
-}
-
-contract basic_set is rERC721Enumerable, Extended {
-
-    uint public tokenIds = 1;
-    string public name;
-    string public symbol;
-
-    constructor(address _rm, string memory _name, string memory _symbol) ERC721(_rm) {
-        name = _name;
-        symbol = _symbol;
-    }
-
-    /*******************************************************************************
-    **  @notice: mint a new set part
-    **  @param to: receiver of the rERC721
-	*******************************************************************************/
-    function mint(uint to) external onlyExtended {
-        _safeMint(to, tokenIds);
-        tokenIds++;
     }
 
 }
