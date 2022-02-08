@@ -85,6 +85,7 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
         uint32 timestamp = uint32(block.timestamp);
 
         BasicSet memory setToBuy = sets[setIndex];
+        require(setToBuy.head != 0 && setToBuy.body != 0 && setToBuy.hand != 0 && setToBuy.foot != 0, "!emptySet");
 
         items[next_item] = item(ARMOR_TYPE, setToBuy.head, timestamp, receiver);
         _safeMint(receiver, next_item);

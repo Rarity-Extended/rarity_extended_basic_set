@@ -135,4 +135,100 @@ contract basic_set_armors_codex {
         spell_failure = 25;
         description = "Yep, random";
     }
+
+    function sorcerer_hat() public pure returns (
+        uint id,
+        uint cost,
+        uint proficiency,
+        uint weight,
+        uint armor_bonus,
+        uint max_dex_bonus,
+        int penalty,
+        uint spell_failure,
+        string memory name,
+        string memory description
+    ) {
+        id = 8;
+        name = "Sorcered Hat";
+        cost = 10e18;
+        proficiency = 1;
+        weight = 2;
+        armor_bonus = 1;
+        max_dex_bonus = 2;
+        penalty = 0;
+        spell_failure = 20;
+        description = "The only protection is preventing your hair from burning with the flying candles";
+    }
+
+    function warrior_helmet() public pure returns (
+        uint id,
+        uint cost,
+        uint proficiency,
+        uint weight,
+        uint armor_bonus,
+        uint max_dex_bonus,
+        int penalty,
+        uint spell_failure,
+        string memory name,
+        string memory description
+    ) {
+        id = 9;
+        name = "Warrior helmet";
+        cost = 50e18;
+        proficiency = 1;
+        weight = 2;
+        armor_bonus = 1;
+        max_dex_bonus = 2;
+        penalty = 0;
+        spell_failure = 15;
+        description = "Every warrior needs one";
+    }
+
+    function metal_glove() public pure returns (
+        uint id,
+        uint cost,
+        uint proficiency,
+        uint weight,
+        uint armor_bonus,
+        uint max_dex_bonus,
+        int penalty,
+        uint spell_failure,
+        string memory name,
+        string memory description
+    ) {
+        id = 10;
+        name = "Metal glove";
+        cost = 10e18;
+        proficiency = 1;
+        weight = 2;
+        armor_bonus = 1;
+        max_dex_bonus = 2;
+        penalty = 0;
+        spell_failure = 10;
+        description = "Perfect to hit, uncomfy to wash your teeth";
+    }
+
+    function hero_boots() public pure returns (
+        uint id,
+        uint cost,
+        uint proficiency,
+        uint weight,
+        uint armor_bonus,
+        uint max_dex_bonus,
+        int penalty,
+        uint spell_failure,
+        string memory name,
+        string memory description
+    ) {
+        id = 11;
+        name = "Hero boots";
+        cost = 15e18;
+        proficiency = 1;
+        weight = 3;
+        armor_bonus = 2;
+        max_dex_bonus = 2;
+        penalty = 0;
+        spell_failure = 10;
+        description = "Keeps your feet warm";
+    }
 }
