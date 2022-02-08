@@ -6,9 +6,9 @@ import "./rERC721Enumerable.sol";
 import "./extended.sol";
 
 contract rarity_extended_basic_set is Extended, rERC721Enumerable {
-    uint constant ARMOR_TYPE = 2;
-    uint constant WEAPON_TYPE = 3;
-    address immutable rm;
+
+    uint8 constant ARMOR_TYPE = 2;
+    uint8 constant WEAPON_TYPE = 3;
 
     uint public next_item;
     uint public basicSetPrice;
@@ -32,8 +32,7 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
         uint8 weapon;
     }
 
-    constructor(address _rm, uint _basicSetPrice) {
-        rm = _rm;
+    constructor(address _rm, uint _basicSetPrice) ERC721(_rm) {
         basicSetPrice = _basicSetPrice;
     }
 
@@ -56,11 +55,11 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
 	*******************************************************************************/
     function deployNewSet(
         string memory setName,
-        uint headItemType,
-        uint bodyItemType,
-        uint handItemType,
-        uint footItemType,
-        uint weaponItemType
+        uint8 headItemType,
+        uint8 bodyItemType,
+        uint8 handItemType,
+        uint8 footItemType,
+        uint8 weaponItemType
     ) public onlyExtended {
         //Save on registry
         sets[setsIndex] = BasicSet(
