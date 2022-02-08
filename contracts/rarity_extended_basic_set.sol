@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.10;
 
-import "./interfaces/IrERC721.sol";
 import "./rERC721Enumerable.sol";
 import "./extended.sol";
 
@@ -44,8 +43,8 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
     }
 
     /*******************************************************************************
-    **  @dev: deploy 4 new rERC721 (head, body, hand, foot). Saves on a registry
-    **  @notice: deploy a new set
+    **  @dev: creates 4 new items (head, body, hand, foot, weapon). Saves on a registry
+    **  @notice: creates a new set
     **  @param setName: name of the set
     **  @param headItemType: item type for the head armor
     **  @param bodyItemType: item type for the body armor
@@ -75,7 +74,7 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
 
     /*******************************************************************************
     **  @dev: mint a new set in exchange for `basicSetPrice`
-    **  @notice: buy a new set paying the price
+    **  @notice: buys a new set paying the price
     **  @param setIndex: index of the set to buy
     **  @param receiver: summoner which will receive the set
 	*******************************************************************************/
@@ -83,29 +82,35 @@ contract rarity_extended_basic_set is Extended, rERC721Enumerable {
         require(msg.value == basicSetPrice, "!basicSetPrice");
         require(setIndex != 0, "!setIndex");
 
+        uint32 timestamp = uint32(block.timestamp);
+
         BasicSet memory setToBuy = sets[setIndex];
-        items[next_item] = item(ARMOR_TYPE, setToBuy.head, uint32(block.timestamp), receiver);
+
+        items[next_item] = item(ARMOR_TYPE, setToBuy.head, timestamp, receiver);
         _safeMint(receiver, next_item);
         next_item++;
 
-        items[next_item] = item(ARMOR_TYPE, setToBuy.body, uint32(block.timestamp), receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.body, timestamp, receiver);
         _safeMint(receiver, next_item);
         next_item++;
 
-        items[next_item] = item(ARMOR_TYPE, setToBuy.hand, uint32(block.timestamp), receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.hand, timestamp, receiver);
         _safeMint(receiver, next_item);
         next_item++;
 
-        items[next_item] = item(ARMOR_TYPE, setToBuy.foot, uint32(block.timestamp), receiver);
+        items[next_item] = item(ARMOR_TYPE, setToBuy.foot, timestamp, receiver);
         _safeMint(receiver, next_item);
         next_item++;
 
-        items[next_item] = item(WEAPON_TYPE, setToBuy.weapon, uint32(block.timestamp), receiver);
+        items[next_item] = item(WEAPON_TYPE, setToBuy.weapon, timestamp, receiver);
         _safeMint(receiver, next_item);
         next_item++;
     }
 
-
+    /*******************************************************************************
+    **  @notice: get type
+    **  @return: a string name with the type name
+	*******************************************************************************/
     function get_type(uint _type_id) public pure returns (string memory _type) {
        if (_type_id == 2) {
             _type = "Armor";
