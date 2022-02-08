@@ -112,7 +112,7 @@ contract rarity_extended_basic_set is Extended {
     **  @notice: get all sets
     **  @return: an array of BasicSet
 	*******************************************************************************/
-    function getSets() external view returns (BasicSet[] memory) {
+    function getSets() public view returns (BasicSet[] memory) {
         uint _setsIndex = setsIndex - 1;
         BasicSet[] memory _sets = new BasicSet[](_setsIndex - 1);
         for (uint256 i = 0; i < _setsIndex; i++) {
@@ -138,7 +138,7 @@ contract basic_set is rERC721Enumerable, Extended {
     **  @notice: mint a new set part
     **  @param to: receiver of the rERC721
 	*******************************************************************************/
-    function mint(uint to) external onlyExtended {
+    function mint(uint to) public onlyExtended {
         _safeMint(to, tokenIds);
         tokenIds++;
     }
