@@ -164,11 +164,11 @@ contract basic_set_armors_codex {
         name = "Sorcered Hat";
         cost = 10e18;
         proficiency = 1;
-        weight = 2;
+        weight = 1;
         armor_bonus = 1;
-        max_dex_bonus = 2;
+        max_dex_bonus = 10;
         penalty = 0;
-        spell_failure = 20;
+        spell_failure = 0;
         description = "The only protection is preventing your hair from burning with the flying candles";
     }
 
@@ -188,11 +188,11 @@ contract basic_set_armors_codex {
         name = "Warrior helmet";
         cost = 50e18;
         proficiency = 1;
-        weight = 2;
-        armor_bonus = 1;
-        max_dex_bonus = 2;
-        penalty = 0;
-        spell_failure = 15;
+        weight = 3;
+        armor_bonus = 2;
+        max_dex_bonus = 8;
+        penalty = 1;
+        spell_failure = 20;
         description = "Every warrior needs one";
     }
 
@@ -214,9 +214,9 @@ contract basic_set_armors_codex {
         proficiency = 1;
         weight = 3;
         armor_bonus = 2;
-        max_dex_bonus = 2;
+        max_dex_bonus = 8;
         penalty = 0;
-        spell_failure = 10;
+        spell_failure = 0;
         description = "Keeps your feet warm";
     }
 
@@ -236,9 +236,9 @@ contract basic_set_armors_codex {
         name = "Leather shoes";
         cost = 15e18;
         proficiency = 1;
-        weight = 3;
-        armor_bonus = 2;
-        max_dex_bonus = 2;
+        weight = 2;
+        armor_bonus = 1;
+        max_dex_bonus = 8;
         penalty = 0;
         spell_failure = 10;
         description = "How many boars had been killed for making this shoes?";
@@ -259,12 +259,12 @@ contract basic_set_armors_codex {
         id = 10;
         name = "Metal glove";
         cost = 10e18;
-        proficiency = 1;
-        weight = 2;
-        armor_bonus = 1;
-        max_dex_bonus = 2;
-        penalty = 0;
-        spell_failure = 10;
+        proficiency = 3;
+        weight = 4;
+        armor_bonus = 3;
+        max_dex_bonus = 6;
+        penalty = 2;
+        spell_failure = 40;
         description = "Perfect to hit, uncomfy to wash your teeth";
     }
 
@@ -283,12 +283,12 @@ contract basic_set_armors_codex {
         id = 10;
         name = "Glove with spikes";
         cost = 10e18;
-        proficiency = 1;
-        weight = 2;
-        armor_bonus = 1;
-        max_dex_bonus = 2;
-        penalty = 0;
-        spell_failure = 10;
+        proficiency = 3;
+        weight = 5;
+        armor_bonus = 3;
+        max_dex_bonus = 8;
+        penalty = 2;
+        spell_failure = 40;
         description = "A tool to shake the enemy's hand";
     }
 
